@@ -4,6 +4,11 @@ An industry-style data science project that analyzes resumes, predicts the most 
 
 This app is designed as a portfolio-ready project for data science, machine learning, and analytics profiles. It combines natural language processing, resume keyword analysis, and a clean Streamlit interface to simulate a lightweight AI hiring assistant.
 
+## Live Demo
+
+- Deployed app: [resume-prediction.streamlit.app](https://resume-prediction-iwrxbzsxfj4bxpganueywn.streamlit.app/)
+- GitHub repository: [tulasinandanpandey/Resume-prediction](https://github.com/tulasinandanpandey/Resume-prediction)
+
 ## Why This Project Matters
 
 Recruiters and hiring teams often scan resumes in seconds. Candidates may have strong experience but still miss the keywords, structure, or signals that align with a target role. This project helps solve that problem by:
@@ -58,6 +63,30 @@ The current version uses a lightweight supervised text-classification pipeline:
 
 This makes the app fast, explainable, and easy to deploy.
 
+## Models Used
+
+This project intentionally uses a lightweight and explainable baseline model instead of a heavy deep learning stack.
+
+- `TF-IDF Vectorizer`
+  - Converts resume text into numeric features based on important words and short phrases
+  - Helps the model learn patterns such as `machine learning`, `sql`, `power bi`, or `feature engineering`
+- `Logistic Regression`
+  - Performs multi-class classification across data-related job roles
+  - Works well for small and medium text-classification problems
+  - Trains quickly and is simple to interpret
+- `Rule-based enrichment`
+  - Detects skills from keyword libraries
+  - Extracts education clues such as `Bachelor`, `Master`, `PhD`, and domain terms
+  - Detects years of experience from resume text patterns
+
+The final app combines the ML prediction and the rule-based signals to generate:
+
+- predicted role
+- confidence score
+- resume strength score
+- missing skill suggestions
+- resume improvement tips
+
 ## Project Structure
 
 ```text
@@ -87,6 +116,75 @@ Run the app:
 streamlit run app.py
 ```
 
+## How Training Works
+
+The current model is trained at app startup using the labeled examples stored in `sample_data.py`.
+
+Training flow:
+
+1. Add labeled resume text examples for each role in `TRAINING_DATA`
+2. Build a text pipeline using TF-IDF
+3. Train a Logistic Regression classifier on the labeled data
+4. Use the trained pipeline to predict the role of new resume text
+
+The main training logic lives in:
+
+- `resume_model.py`
+- `sample_data.py`
+
+## How To Retrain With Your Own Data
+
+If you want to improve the model and make the project stronger for real-world use, replace the demo training set with your own labeled dataset.
+
+### Option 1: Update the bundled sample data
+
+Edit `sample_data.py` and replace the current `TRAINING_DATA` list with a larger set of examples in this format:
+
+```python
+TRAINING_DATA = [
+    {"role": "Data Scientist", "text": "Resume text here..."},
+    {"role": "Data Analyst", "text": "Resume text here..."},
+]
+```
+
+Then restart the app:
+
+```bash
+streamlit run app.py
+```
+
+### Option 2: Train from a CSV dataset
+
+You can also extend the project to load a CSV file with columns like:
+
+- `role`
+- `text`
+
+Example:
+
+```csv
+role,text
+Data Scientist,"Python, scikit-learn, NLP, forecasting..."
+Data Analyst,"SQL, Excel, Tableau, KPI dashboards..."
+```
+
+Then modify `build_model()` in `resume_model.py` to read from that dataset before fitting the model.
+
+## Suggested Training Improvements
+
+To make the project more industry-grade, consider these upgrades:
+
+- Use hundreds or thousands of labeled resumes or job-profile summaries
+- Add class balancing if some roles have far fewer examples
+- Evaluate model quality with train/test split and metrics like accuracy, precision, recall, and F1-score
+- Save the trained model with `joblib` instead of retraining on every app start
+- Add job-description matching so resumes can be scored against a specific opening
+- Compare baseline models such as:
+  - Logistic Regression
+  - Linear SVM
+  - Multinomial Naive Bayes
+  - fine-tuned transformer embeddings for a more advanced version
+
 ## Deployment
 
 This project is ready for deployment on Streamlit Community Cloud.
@@ -114,6 +212,16 @@ Example impact bullets:
 - Developed an NLP-based resume classification pipeline using TF-IDF and Logistic Regression for multi-role prediction across core data career paths
 - Built a recruiter-style scoring workflow to evaluate resume strength using keyword matching, experience extraction, and education signals
 - Deployed an interactive Streamlit app supporting `TXT`, `PDF`, and `DOCX` resume uploads for real-time resume analysis
+
+## Recruiter-Friendly Project Summary
+
+This project demonstrates practical machine learning product thinking, not just model training. It shows the ability to:
+
+- frame a real hiring and resume-screening problem
+- build an end-to-end NLP application
+- combine machine learning with interpretable business logic
+- deploy a working ML app to the cloud
+- present technical work in a portfolio-ready format
 
 ## Current Limitations
 
