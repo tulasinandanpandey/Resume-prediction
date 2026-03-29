@@ -98,7 +98,8 @@ This project is ready for deployment on Streamlit Community Cloud.
 3. Click `New app`.
 4. Select the repository: `tulasinandanpandey/Resume-prediction`
 5. Set the main file path to `app.py`
-6. Click `Deploy`
+6. Open `Advanced settings` and choose Python `3.12`
+7. Click `Deploy`
 
 ## Resume and Portfolio Value
 

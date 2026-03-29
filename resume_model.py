@@ -42,7 +42,8 @@ def build_model() -> Pipeline:
                 "clf",
                 LogisticRegression(
                     max_iter=2000,
-                    multi_class="auto",
+                    solver="lbfgs",
+                    random_state=42,
                 ),
             ),
         ]
